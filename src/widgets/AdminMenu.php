@@ -127,7 +127,7 @@ class AdminMenu extends Menu
         //print_r($c);exit;
         $c['items'] = array_merge($items, $c['items']);
         foreach ($c['items'] as $k => $i) {
-            if (isset($i['url']) and is_array($i['url']) and !isset($i['visible'])) {
+            if (!isset($i['visible'])) {
                 $visible = false;
                 if (!empty($i['items'])) {
                     foreach ($i['items'] as $childKey => $child) {
@@ -140,7 +140,7 @@ class AdminMenu extends Menu
                             $c['items'][$k]['items'][$childKey]['visible'] = $childVisible;
                         }
                     }
-                } else {
+                } elseif (isset($i['url']) and is_array($i['url'])) {
                     $url = reset($i['url']);
                     $visible = Yii::$app->user->can('administrator') or Yii::$app->user->can($url);
                 }
