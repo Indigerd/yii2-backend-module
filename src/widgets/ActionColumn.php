@@ -18,8 +18,8 @@ class ActionColumn extends BaseActionColumn
 
     protected function initButtonsVisibility()
     {
-        foreach ($this->buttons as $button) {
-            $this->initButtonVisibility($button);
+        foreach ($this->buttons as $name => $button) {
+            $this->initButtonVisibility($name);
         }
     }
 
