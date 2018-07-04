@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
 use indigerd\adminmodule\AdminMenuInterface;
+use indigerd\adminmodule\helpers\Access;
 
 class AdminMenu extends Menu
 {
@@ -132,7 +133,7 @@ class AdminMenu extends Menu
                 if (!empty($i['items'])) {
                     foreach ($i['items'] as $childKey => $child) {
                         if (isset($child['url']) and is_array($child['url']) and !isset($child['visible'])) {
-                            $childVisible = Yii::$app->user->can('administrator') or static::checkPermission($child['url']);
+                            $childVisible = Yii::$app->user->can('administrator') or Access::checkPermission($child['url']);
                             if ($childVisible) {
                                 $visible = true;
                             }
@@ -140,37 +141,13 @@ class AdminMenu extends Menu
                         }
                     }
                 } elseif (isset($i['url']) and is_array($i['url'])) {
-                    $visible = Yii::$app->user->can('administrator') or static::checkPermission($i['url']);
+                    $visible = Yii::$app->user->can('administrator') or Access::checkPermission($i['url']);
+                } else {
+                    $visible = true;
                 }
                 $c['items'][$k]['visible'] = $visible;
             }
         }
         return parent::widget($c);
-    }
-
-    protected static function checkPermission($route)
-    {
-        //$route[0] - is the route, $route[1] - is the associated parameters
-        $routes = static::createPartRoutes($route);
-        foreach ($routes as $routeVariant) {
-            if (Yii::$app->user->can($routeVariant, $route[1])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected static function createPartRoutes($route)
-    {
-        //$route[0] - is the route, $route[1] - is the associated parameters
-        $routePathTmp = explode('/', trim($route[0], '/'));
-        $result = [];
-        $routeVariant = array_shift($routePathTmp);
-        $result[] = $routeVariant;
-        foreach ($routePathTmp as $routePart) {
-            $routeVariant .= '/' . $routePart;
-            $result[] = $routeVariant;
-        }
-        return $result;
     }
 }

@@ -4,6 +4,7 @@ namespace indigerd\adminmodule\widgets;
 
 use Yii;
 use yii\grid\ActionColumn as BaseActionColumn;
+use indigerd\adminmodule\helpers\Access;
 
 class ActionColumn extends BaseActionColumn
 {
@@ -25,11 +26,11 @@ class ActionColumn extends BaseActionColumn
 
     protected function initButtonVisibility($name)
     {
-        $route = ltrim(implode('/',[
+        $route = [implode('/', [
             Yii::$app->controller->module->getUniqueId(),
             Yii::$app->controller->getUniqueId(),
             $name
-        ]), '/');
-        $this->visibleButtons[$name] = Yii::$app->user->can('administrator') or Yii::$app->user->can($route);
+        ])];
+        $this->visibleButtons[$name] = Yii::$app->user->can('administrator') or Access::checkPermission($route);
     }
 }
