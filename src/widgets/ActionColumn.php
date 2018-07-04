@@ -31,6 +31,6 @@ class ActionColumn extends BaseActionColumn
             Yii::$app->controller->getUniqueId(),
             $name
         ])];
-        $this->visibleButtons[$name] = Yii::$app->user->can('administrator') or Access::checkPermission($route);
+        $this->visibleButtons[$name] = (Yii::$app->user->can('administrator') or Access::checkPermission($route));
     }
 }

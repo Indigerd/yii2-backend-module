@@ -133,7 +133,7 @@ class AdminMenu extends Menu
                 if (!empty($i['items'])) {
                     foreach ($i['items'] as $childKey => $child) {
                         if (isset($child['url']) and is_array($child['url']) and !isset($child['visible'])) {
-                            $childVisible = Yii::$app->user->can('administrator') or Access::checkPermission($child['url']);
+                            $childVisible = (Yii::$app->user->can('administrator') or Access::checkPermission($child['url']));
                             if ($childVisible) {
                                 $visible = true;
                             }
@@ -141,7 +141,7 @@ class AdminMenu extends Menu
                         }
                     }
                 } elseif (isset($i['url']) and is_array($i['url'])) {
-                    $visible = Yii::$app->user->can('administrator') or Access::checkPermission($i['url']);
+                    $visible = (Yii::$app->user->can('administrator') or Access::checkPermission($i['url']));
                 } else {
                     $visible = true;
                 }
