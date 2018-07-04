@@ -27,7 +27,6 @@ class ActionColumn extends BaseActionColumn
     protected function initButtonVisibility($name)
     {
         $route = [implode('/', [
-            Yii::$app->controller->module->getUniqueId(),
             Yii::$app->controller->getUniqueId(),
             $name
         ])];
